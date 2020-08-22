@@ -40,7 +40,7 @@ func TestAdopt(t *testing.T) {
 			ctx, cancel := context.WithDeadline(context.Background(), deadline)
 			defer cancel()
 
-			db, err := Adopt(tt.args.driver, tt.args.dsn)
+			db, err := WithAnnotation(tt.args.driver, tt.args.dsn)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Adopt() error = %+v, wantErr %+v", err, tt.wantErr)
 				return

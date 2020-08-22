@@ -21,7 +21,8 @@ func injectCaller(query string) string {
 	return fmt.Sprintf("/* %s (%s:%d) */ %s", fn.Name(), file, line, query)
 }
 
-func Adopt(driver, dsn string) (*sql.DB, error) {
+// WithAnnotation creates wrapped sql.*DB connection that injects caller information to the query.
+func WithAnnotation(driver, dsn string) (*sql.DB, error) {
 	if err := initDriver(driver, dsn); err != nil {
 		return nil, err
 	}
