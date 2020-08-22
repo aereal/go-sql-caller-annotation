@@ -36,7 +36,7 @@ func TestAdopt(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			deadline := time.Now().Add(time.Second * 10)
+			deadline := time.Now().Add(time.Second * 30)
 			ctx, cancel := context.WithDeadline(context.Background(), deadline)
 			defer cancel()
 
