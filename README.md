@@ -1,5 +1,5 @@
 ![CI](https://github.com/aereal/go-sql-caller-annotation/workflows/CI/badge.svg?branch=main)
-[![PkgGoDev](https://pkg.go.dev/badge/aereal/go-sql-caller-annotation)](https://pkg.go.dev/aereal/go-sql-caller-annotation)
+[![PkgGoDev](https://pkg.go.dev/badge/aereal/go-sql-caller-annotation)](https://pkg.go.dev/github.com/aereal/go-sql-caller-annotation)
 
 # go-sql-caller-annotation
 
