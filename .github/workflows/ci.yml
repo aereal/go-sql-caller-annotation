@@ -1,0 +1,45 @@
+---
+
+name: CI
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  schedule:
+    -
+      cron: '0 1 * * *'
+jobs:
+  build:
+    services:
+      mysql:
+        image: 'mysql:8.0'
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: app
+        ports:
+          - '3306/tcp'
+    strategy:
+      matrix:
+        go_version:
+          - 1.15.x
+        os:
+          - ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v1.1.2
+        with:
+          go-version: ${{ matrix.go_version }}
+      - uses: actions/cache@v1
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ matrix.go_version }}-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ matrix.go_version }}
+      - name: test
+        run: go test ./...
+        env:
+          MYSQL_DSN: "root@tcp(127.0.0.1:${{ job.services.mysql.ports['3306'] }})/app"
+      - name: lint
+        uses: reviewdog/action-golangci-lint@v1
