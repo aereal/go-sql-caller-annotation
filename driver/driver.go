@@ -28,6 +28,8 @@ func Adopt(driver, dsn string) (*sql.DB, error) {
 	return sql.Open(driver+driverSuffix, dsn)
 }
 
+// mostly copied by aws-xray-sdk-go (https://github.com/aws/aws-xray-sdk-go/blob/master/xray/sql_context.go)
+
 func initDriver(driver, dsn string) error {
 	muInitializedDrivers.Lock()
 	defer muInitializedDrivers.Unlock()
