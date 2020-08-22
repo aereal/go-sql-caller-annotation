@@ -1,0 +1,6 @@
+  
+{
+  "extends": [
+    "github>aereal/renovate-config"
+  ]
+}
