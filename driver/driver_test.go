@@ -59,6 +59,7 @@ func TestAdopt(t *testing.T) {
 					}
 					time.Sleep(interval)
 					interval = time.Duration(2 * float64(interval))
+					continue
 				}
 				if err != nil {
 					t.Errorf("PingContext error = %+v", err)
