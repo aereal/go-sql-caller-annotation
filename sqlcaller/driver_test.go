@@ -8,6 +8,7 @@ import (
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/lib/pq"
 )
 
 func TestAdopt(t *testing.T) {
@@ -26,6 +27,16 @@ func TestAdopt(t *testing.T) {
 			name: "mysql",
 			args: args{
 				driver: "mysql",
+				dsn:    dsn,
+			},
+			wantErr: false,
+		})
+	}
+	if dsn := os.Getenv("PG_DSN"); dsn != "" {
+		tests = append(tests, testCase{
+			name: "postgres",
+			args: args{
+				driver: "postgres",
 				dsn:    dsn,
 			},
 			wantErr: false,
