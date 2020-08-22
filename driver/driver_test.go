@@ -36,12 +36,8 @@ func TestAdopt(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			cancel := func() {}
-			ctx := context.Background()
-			deadline, nonZero := t.Deadline()
-			if nonZero {
-				ctx, cancel = context.WithDeadline(ctx, deadline)
-			}
+			deadline := time.Now().Add(time.Second * 10)
+			ctx, cancel := context.WithDeadline(context.Background(), deadline)
 			defer cancel()
 
 			db, err := Adopt(tt.args.driver, tt.args.dsn)
