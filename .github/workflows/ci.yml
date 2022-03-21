@@ -54,4 +54,4 @@ jobs:
           MYSQL_DSN: "root@tcp(127.0.0.1:${{ job.services.mysql.ports['3306'] }})/app"
           PG_DSN: "postgres://dankogai:kogaidan@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/dankogai?sslmode=disable"
       - name: lint
-        uses: reviewdog/action-golangci-lint@v1
+        uses: reviewdog/action-golangci-lint@v2
