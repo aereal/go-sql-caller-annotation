@@ -13,6 +13,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: lint
         uses: reviewdog/action-golangci-lint@v2
+        with:
+          level: info
   build:
     services:
       mysql:
