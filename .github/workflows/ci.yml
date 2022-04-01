@@ -6,10 +6,15 @@ on:
   push:
     branches:
       - main
-  schedule:
-    -
-      cron: '0 1 * * *'
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: lint
+        uses: reviewdog/action-golangci-lint@v2
+        with:
+          level: info
   build:
     services:
       mysql:
@@ -29,11 +34,11 @@ jobs:
     strategy:
       matrix:
         go_version:
-          - 1.11.x
-          - 1.12.x
-          - 1.13.x
           - 1.14.x
           - 1.15.x
+          - 1.16.x
+          - 1.17.x
+          - 1.18.x
         os:
           - ubuntu-latest
     runs-on: ${{ matrix.os }}
@@ -53,5 +58,3 @@ jobs:
         env:
           MYSQL_DSN: "root@tcp(127.0.0.1:${{ job.services.mysql.ports['3306'] }})/app"
           PG_DSN: "postgres://dankogai:kogaidan@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/dankogai?sslmode=disable"
-      - name: lint
-        uses: reviewdog/action-golangci-lint@v2
