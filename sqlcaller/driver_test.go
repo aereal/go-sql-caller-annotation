@@ -11,7 +11,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func TestAdopt(t *testing.T) {
+func TestWithAnnotation(t *testing.T) {
 	type args struct {
 		driver string
 		dsn    string
@@ -53,7 +53,7 @@ func TestAdopt(t *testing.T) {
 
 			db, err := WithAnnotation(tt.args.driver, tt.args.dsn)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("Adopt() error = %+v, wantErr %+v", err, tt.wantErr)
+				t.Errorf("error = %+v, wantErr %+v", err, tt.wantErr)
 				return
 			}
 

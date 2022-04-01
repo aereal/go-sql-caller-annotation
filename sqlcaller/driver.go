@@ -73,9 +73,7 @@ var _ interface {
 	driver.ConnPrepareContext
 	driver.ConnBeginTx
 	driver.Pinger
-	driver.Execer
 	driver.ExecerContext
-	driver.Queryer
 	driver.QueryerContext
 	driver.SessionResetter
 	driver.NamedValueChecker
@@ -144,28 +142,12 @@ func (c *driverConn) PrepareContext(ctx context.Context, query string) (driver.S
 	}, nil
 }
 
-func (c *driverConn) Exec(query string, args []driver.Value) (driver.Result, error) {
-	execer, ok := c.Conn.(driver.Execer)
-	if !ok {
-		return nil, driver.ErrSkip
-	}
-	return execer.Exec(injectCaller(query), args)
-}
-
 func (c *driverConn) ExecContext(ctx context.Context, query string, args []driver.NamedValue) (driver.Result, error) {
 	execer, ok := c.Conn.(driver.ExecerContext)
 	if !ok {
 		return nil, driver.ErrSkip
 	}
 	return execer.ExecContext(ctx, injectCaller(query), args)
-}
-
-func (c *driverConn) Query(query string, args []driver.Value) (driver.Rows, error) {
-	queryer, ok := c.Conn.(driver.Queryer)
-	if !ok {
-		return nil, driver.ErrSkip
-	}
-	return queryer.Query(injectCaller(query), args)
 }
 
 func (c *driverConn) QueryContext(ctx context.Context, query string, args []driver.NamedValue) (driver.Rows, error) {
@@ -185,7 +167,6 @@ var _ interface {
 	driver.Stmt
 	driver.StmtExecContext
 	driver.StmtQueryContext
-	driver.ColumnConverter
 	driver.NamedValueChecker
 } = &driverStmt{}
 
@@ -203,13 +184,6 @@ func (s *driverStmt) QueryContext(ctx context.Context, args []driver.NamedValue)
 		return nil, driver.ErrSkip
 	}
 	return queryer.QueryContext(ctx, args)
-}
-
-func (s *driverStmt) ColumnConverter(idx int) driver.ValueConverter {
-	if conv, ok := s.Stmt.(driver.ColumnConverter); ok {
-		return conv.ColumnConverter(idx)
-	}
-	return driver.DefaultParameterConverter
 }
 
 func (s *driverStmt) CheckNamedValue(nv *driver.NamedValue) (err error) {
